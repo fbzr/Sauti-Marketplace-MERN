@@ -1,0 +1,32 @@
+{
+  "name": "sauti-marketplace-react",
+  "version": "1.0.0",
+  "description": "Proposal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fbzr/Sauti-Marketplace-React.git"
+  },
+  "author": "Fabricio Bezerra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fbzr/Sauti-Marketplace-React/issues"
+  },
+  "homepage": "https://github.com/fbzr/Sauti-Marketplace-React#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.4"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
+  }
+}
