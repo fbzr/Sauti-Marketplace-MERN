@@ -10,9 +10,16 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#fff',
         marginBottom: '20px'
     },
-    MuiIconButtonRoot: {
-        width: '150px',
-        backgroundColor: theme.palette.background.default
+    navHeader: {
+        fontSize: '30px',
+        fontFamily: 'Montserrat',
+        letterSpacing: '-1px',
+        fontWeight: '600',
+        color: '#fff',
+        margin: '0'
+    },
+    span: {
+        color: '#e84c3d'
     }
 }))
 
@@ -28,7 +35,7 @@ const Navbar = () => {
                 <Container>
                     <Toolbar>
                         <IconButton>
-                            <img className={classes.MuiIconButtonRoot} src="../../sauti.png" alt="Small logo"/>
+                            <p className={classes.navHeader}>Sauti<span className={classes.span}>.</span></p>
                         </IconButton>
                     </Toolbar>
                 </Container>
