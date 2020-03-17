@@ -4,31 +4,15 @@ const bcrypt = require("bcryptjs");
 
 const User = require('../../models/User');
 
-// @route   POST api/users/register
-// @desc    Register user
+// @route   GET api/users/
+// @desc    Get all users
 // @access  Public
-router.post('/register', async (req, res) => {
-    const { username, password } = req.body;
-
-    try {
-        if(await User.findOne({ username })) {
-            return res.status(400).json({ errors: [{ msg: 'User already exists'}] });
+router.get('/', (req, res) => {
+    User.find({}, (err, users) => {
+        if(!err) {
+            return res.status(200).json(users);
         }
-
-        const user = new User({
-            username,
-            password
-        })
-
-        // Encrypt password
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-        console.log(user.password)
-
-        await user.save();
-    } catch(err) {
-        res.status(500).send(`Server error: ${err.message}`);
-    }
+    })
 });
 
 module.exports = router;
