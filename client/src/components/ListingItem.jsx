@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, CardContent, Typography, makeStyles, Grid, IconButton } from '@material-ui/core';
-import { LocationOn, AccountCircle, DeleteOutline, Edit } from '@material-ui/icons';
+import { Card, CardContent, Typography, makeStyles, Grid } from '@material-ui/core';
+import { LocationOn, AccountCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ListingItem = ({ listing, userId }) => {
-    const { id, user_id, username, location, item, description, price } = listing;
+    const { user_id, username, location, item, description, price } = listing;
     const classes = useStyles();
     
     console.log(`userId: ${userId}`);

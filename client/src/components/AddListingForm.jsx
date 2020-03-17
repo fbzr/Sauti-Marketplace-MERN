@@ -29,7 +29,7 @@ const MuiFormikTextField = ({ label, ...props }) => {
 }
 
 const AddListingForm = (props) => {
-    const { isSubmitting, values, setValues, expanded } = props;
+    const { isSubmitting, expanded } = props;
     const classes = useStyles();
     
     return (

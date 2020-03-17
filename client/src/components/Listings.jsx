@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
 import ListingItem from './ListingItem';
-import { Grid, Container, makeStyles, FormControl, InputLabel, Select, MenuItem, IconButton, Typography, CardContent, Collapse, Card } from '@material-ui/core';
+import { Grid, Container, makeStyles, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
 import { AddBox, Close } from '@material-ui/icons';
 import AddListingForm from './AddListingForm';
 
