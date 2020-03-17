@@ -34,7 +34,7 @@ const Listings = ({userId}) => {
             // Fetch users for the select input
             const fetchUsers = async () => {
                 try {
-                    const res = await Axios.get('http://africanmarketplace.ddns.net:5000/api/users/');
+                    const res = await Axios.get('http://localhost:5000/api/users/');
                     setUsers(res.data);
                 } catch(err) {
                     console.log(err.message);
@@ -43,7 +43,7 @@ const Listings = ({userId}) => {
 
             const fetchAllListings = async () => {            
                 try {
-                    const res = await Axios.get('http://africanmarketplace.ddns.net:5000/api/listings');                    
+                    const res = await Axios.get('http://localhost:5000/api/listings');                    
                     setListings(res.data);
                 } catch(err) {
                     console.log(err.message);
