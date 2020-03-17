@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => res.send('users route'));
+// @route   POST api/users
+// @desc    Register user
+// @access  Public
+router.post('/', async (req, res) => {
+    const { username, password } = req.body;
+});
 
 module.exports = router;
