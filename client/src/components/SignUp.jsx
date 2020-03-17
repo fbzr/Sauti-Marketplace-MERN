@@ -123,13 +123,13 @@ const SignUp = withFormik({
         const { username, password } = data;
         
         // Register
-        axios.post('/api/auth/register', { username, password })
+        axios.post('http://localhost:5000/api/auth/register', { username, password })
             .then(res => {
                 setSubmitting(true);
                 console.log(res);
                 
                 // Log in 
-                axios.post('/api/auth/login', { username, password })
+                axios.post('http://localhost:5000/api/auth/login', { username, password })
                     .then(res => {
                         const { token, user_id } = res.data;
                         resetForm();

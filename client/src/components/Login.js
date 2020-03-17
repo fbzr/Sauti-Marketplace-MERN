@@ -117,15 +117,9 @@ const Login = withFormik({
     }),
     handleSubmit: (data, { resetForm, setErrors, setSubmitting, props }) => {
         const { username, password } = data;
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        const body = JSON.stringify({ username, password });
-        
+
         // Log in 
-        axios.post('http://localhost:5000/api/auth/login', body, config)
+        axios.post('http://localhost:5000/api/auth/login', { username, password })
             .then(res => {
                 setSubmitting(true);
                 const { token, user_id } = res.data;
