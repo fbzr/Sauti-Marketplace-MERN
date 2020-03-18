@@ -16,6 +16,16 @@ const ListingSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    user: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true
+        },
+        username: {
+            type: mongoose.Schema.Types.String,
+            required: true
+        }
     }
 });
 

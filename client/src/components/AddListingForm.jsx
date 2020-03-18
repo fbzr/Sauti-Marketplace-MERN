@@ -84,10 +84,9 @@ const AddListing = withFormik({
             price: values.price
         }
         
-        Axios.post(`http://africanmarketplace.ddns.net:5000/api/users/${props.userId}/listings`, data, config)
+        Axios.post(`http://localhost:5000/api/listings/`, data, config)
             .then(res => {
                 setSubmitting(false);
-                debugger
                 resetForm();
                 props.resetListings();
             })

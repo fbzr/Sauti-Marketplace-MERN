@@ -30,11 +30,38 @@ const Listings = ({userId}) => {
     const [reload, setReload] = useState(true);
 
     useEffect(() => {
+        
+        // Fetch users for the select input
+        const fetchUsers = async () => {
+            try {
+                const res = await Axios.get('http://localhost:5000/api/users/');
+                console.log(`User: ${res.data}`);
+                setUsers(res.data);
+            } catch(err) {
+                console.log(err.message);
+            }
+        }
+
+        const fetchAllListings = async () => {            
+            try {
+                const res = await Axios.get('http://localhost:5000/api/listings');                    
+                setListings(res.data);
+            } catch(err) {
+                console.log(err.message);
+            }
+        }
+
+        fetchUsers();
+        fetchAllListings(); 
+    }, [])
+
+    useEffect(() => {
         if(reload) {
             // Fetch users for the select input
             const fetchUsers = async () => {
                 try {
                     const res = await Axios.get('http://localhost:5000/api/users/');
+                    console.log(`User: ${res.data}`);
                     setUsers(res.data);
                 } catch(err) {
                     console.log(err.message);

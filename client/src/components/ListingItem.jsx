@@ -20,12 +20,10 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const ListingItem = ({ listing, userId }) => {
-    const { user_id, username, location, item, description, price } = listing;
+const ListingItem = ({ listing }) => {
+    const { user, location, item, description, price } = listing;
     const classes = useStyles();
     
-    console.log(`userId: ${userId}`);
-    console.log(`user_id: ${user_id}`);
     return (
         <Grid item xs={12} sm={6} md={4} lg={3} >
             <Card className={classes.root}>
@@ -39,7 +37,7 @@ const ListingItem = ({ listing, userId }) => {
                                 {description}
                             </Typography>
                             <Typography className={classes.infoText} variant="body2" color="textSecondary" component="p">
-                                <AccountCircle /> {username}
+                                <AccountCircle /> {user.username}
                             </Typography>
                             <Typography className={classes.infoText} variant="body2" color="textSecondary" component="p">
                                <LocationOn /> {location}

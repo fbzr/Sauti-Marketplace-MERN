@@ -10,6 +10,7 @@ import Homepage from './components/Homepage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './muiTheme';
+import setAuthorization from './utils/setAuthorization';
 
 function App() {
   const history = useHistory();
@@ -19,8 +20,8 @@ function App() {
   });
 
   useEffect(() => {
-    sessionStorage.setItem('token', credentials.token);
-    sessionStorage.setItem('id', credentials.id);
+    const { token, id } = credentials;
+    setAuthorization(token, id);
   }, [credentials]);
 
   const handleLogin = (loginToken, loginUserId) => {
