@@ -22,22 +22,28 @@ function App() {
   useEffect(() => {
     const { token, id } = credentials;
     setAuthorization(token, id);
-  }, [credentials]);
+    history.push('/');
+  }, [credentials, history]);
 
   const handleLogin = (loginToken, loginUserId) => {
     setCredentials({
       token: loginToken,
       id: loginUserId
     });
+  }
 
-    history.push('/');
+  const handleLogout = () => {
+    setCredentials({
+      token: '',
+      id: ''
+    });
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Fragment>
         <CssBaseline />
-        <NavBar />
+        <NavBar handleLogout={handleLogout} />
         <Switch>
           <Route exact path='/login'>
             <Login handleLogin={handleLogin} />

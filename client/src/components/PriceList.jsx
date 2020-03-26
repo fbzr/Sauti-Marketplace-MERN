@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTable from 'material-table';
-import Axios from 'axios';
 import { Container } from '@material-ui/core';
+// crud operations
+import { getAllPrices, addPrice, removePrice, editPrice } from '../crud/prices';
 
-const PriceList = () => {
-    const token = sessionStorage.getItem('token');
-    
+const PriceList = () => {  
     const [prices, setPrices] = useState([]);
     const [table, setTable] = useState({
         columns: [
@@ -18,77 +17,66 @@ const PriceList = () => {
     });
 
     useEffect(() => {
-        const config = { headers: { 'Authorization':token } }
         const fetchData = async () => {
             try {
-                const res = await Axios.get('http://africanmarketplace.ddns.net:5000/api/prices', config);
+                const res = await getAllPrices();
                 setPrices(res.data);
             } catch(err) {
                 console.log(err.message);
             }   
         }
         fetchData();
-    }, [token]);
+    }, []);
 
     useEffect(() => {
-        setTable(table => ({
-            ...table,
-            data: prices.map(item => (item))
-        }));
+        if(prices) {
+            setTable(table => ({
+                ...table,
+                data: prices.map(item => (item))
+            }));
+        }
     }, [prices]);
 
-    const addPrice = async newData => {
+    const handleAddPrice = async newData => {
         try {
-            const config = { headers: { 'Authorization':token } }
-            const res = await Axios.post('http://africanmarketplace.ddns.net:5000/api/prices', newData, config);
-            if (res.statusText === 'Created') {
-                setPrices(prevPrices => [...prevPrices, {...newData, id: res.data.id}]);
-            }
+            const res = await addPrice(newData);
+            setPrices(prevPrices => [...prevPrices, {...newData, _id: res.data._id}]);
         } catch(err) {
             console.log(err.message);
         }
     }
 
-    const removePrice = async oldData => {
+    const handleRemovePrice = async oldData => {
         try {
-            const res = await Axios.delete(`http://africanmarketplace.ddns.net:5000/api/prices/${oldData.id}`, {
-                headers: {
-                    'Authorization': token
-                },
-                data: oldData
-            });
-            console.log(res);
+            await removePrice(oldData._id);
         } catch(err) {
             console.log(err.message);
         } finally {
             setPrices(prevPrices => {
-                const index = prevPrices.findIndex(element => element.id === oldData.id);
+                const index = prevPrices.findIndex(element => element._id === oldData._id);
                 prevPrices.splice(index, 1);
                 return [ ...prevPrices ];
             })
         }
     }
 
-    const editPrice = async (oldData, newData) => {
-        // const config = { headers: { 'Authorization':token } }
-        // try {
-        //     const res = await Axios.put(`http://africanmarketplace.ddns.net:5000/api/prices/${oldData.id}`, newData, config);
-        //     console.log(res);
-        // } catch(err) {
-        //     console.log(err.message);
-        // } finally {
-        //     setPrices(prevPrices => {
-        //         const data = [...prevPrices];
-        //         data[data.indexOf(oldData)] = newData;
-        //         console.log(data);
-        //         return data;
-        //     })
-        // }     
+    const handleEditPrice = async (oldData, newData) => {
+        try {
+            await editPrice(newData);
+        } catch(err) {
+            console.log(err.message);
+        } finally {
+            setPrices(prevPrices => {
+                const data = [...prevPrices];
+                data[data.indexOf(oldData)] = newData;
+                console.log(data);
+                return data;
+            })
+        }     
         
         setPrices(prevPrices => {
             const data = [...prevPrices];
             data[data.indexOf(oldData)] = newData;
-            console.log(data);
             return data;
         })
     }
@@ -105,7 +93,7 @@ const PriceList = () => {
                 new Promise(resolve => {
                     setTimeout(() => {
                         resolve();
-                        addPrice(newData);
+                        handleAddPrice(newData);
                     }, 600);
                 }),
                 onRowUpdate: (newData, oldData) =>
@@ -113,7 +101,7 @@ const PriceList = () => {
                     setTimeout(() => {
                         resolve();
                         if (oldData) {
-                            editPrice(oldData, newData);
+                            handleEditPrice(oldData, newData);
                         }
                     }, 600);
                 }),
@@ -121,7 +109,7 @@ const PriceList = () => {
                 new Promise(resolve => {
                     setTimeout(() => {
                         resolve();
-                        removePrice(oldData);
+                        handleRemovePrice(oldData);
                     }, 600);
                 }),
             }}

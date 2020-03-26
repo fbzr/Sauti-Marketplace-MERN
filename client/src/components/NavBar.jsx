@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { AppBar, Toolbar, Tabs, Tab, makeStyles, Container, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Tabs, Tab, makeStyles, Container, IconButton, Button } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -16,14 +16,15 @@ const useStyles = makeStyles(theme => ({
         letterSpacing: '-1px',
         fontWeight: '600',
         color: '#fff',
-        margin: '0'
+        margin: '0',
+        textTransform: 'none'
     },
     span: {
         color: '#e84c3d'
     }
 }))
 
-const Navbar = () => {
+const Navbar = ({ handleLogout }) => {
     const classes = useStyles();
     const locationPathName = useLocation().pathname;
     const protectedRoutes = ['/prices', '/listings', '/' ];
@@ -34,9 +35,16 @@ const Navbar = () => {
             <AppBar className={classes.appbar} position="static">
                 <Container>
                     <Toolbar>
-                        <IconButton>
-                            <p className={classes.navHeader}>Sauti<span className={classes.span}>.</span></p>
-                        </IconButton>
+                        <div style={{flexGrow: '1'}}>
+                            <IconButton>
+                                <p className={classes.navHeader}>Sauti<span className={classes.span}>.</span></p>
+                            </IconButton>
+                        </div>
+                        <div>
+                            <Button onClick={() => handleLogout()}>
+                                <p className={classes.navHeader} style={{fontSize: '20px'}}>Logout</p>
+                            </Button>
+                        </div>
                     </Toolbar>
                 </Container>
             </AppBar>

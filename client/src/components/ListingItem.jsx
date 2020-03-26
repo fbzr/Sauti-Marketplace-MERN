@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Card, CardContent, Typography, makeStyles, Grid } from '@material-ui/core';
 import { LocationOn, AccountCircle } from '@material-ui/icons';
 

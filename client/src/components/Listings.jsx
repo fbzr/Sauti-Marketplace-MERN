@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Axios from 'axios';
-import ListingItem from './ListingItem';
+import React, { useEffect, useState } from 'react';
+import { getAllUsers } from '../crud/users';
+import { getAllListings } from '../crud/listings';
+// material-ui
 import { Grid, Container, makeStyles, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
 import { AddBox, Close } from '@material-ui/icons';
+// components
+import ListingItem from './ListingItem';
 import AddListingForm from './AddListingForm';
 
 const useStyles = makeStyles(theme => ({
@@ -24,44 +27,17 @@ const Listings = ({userId}) => {
     const [filteredListings, setFilteredListings] = useState([]);
     const [users, setUsers] = useState([]);
     const [locations, setLocations] = useState([]);
-    const [selectedUser, setSelectedUser] = useState({ id: '', username: '' });
+    const [selectedUser, setSelectedUser] = useState({ _id: '', username: '' });
     const [selectedLocation, setSelectedLocation] = useState('');
     const [expanded, setExpanded] = useState(false);
     const [reload, setReload] = useState(true);
-
-    useEffect(() => {
-        
-        // Fetch users for the select input
-        const fetchUsers = async () => {
-            try {
-                const res = await Axios.get('http://localhost:5000/api/users/');
-                console.log(`User: ${res.data}`);
-                setUsers(res.data);
-            } catch(err) {
-                console.log(err.message);
-            }
-        }
-
-        const fetchAllListings = async () => {            
-            try {
-                const res = await Axios.get('http://localhost:5000/api/listings');                    
-                setListings(res.data);
-            } catch(err) {
-                console.log(err.message);
-            }
-        }
-
-        fetchUsers();
-        fetchAllListings(); 
-    }, [])
 
     useEffect(() => {
         if(reload) {
             // Fetch users for the select input
             const fetchUsers = async () => {
                 try {
-                    const res = await Axios.get('http://localhost:5000/api/users/');
-                    console.log(`User: ${res.data}`);
+                    const res = await getAllUsers();
                     setUsers(res.data);
                 } catch(err) {
                     console.log(err.message);
@@ -70,7 +46,7 @@ const Listings = ({userId}) => {
 
             const fetchAllListings = async () => {            
                 try {
-                    const res = await Axios.get('http://localhost:5000/api/listings');                    
+                    const res = await getAllListings();
                     setListings(res.data);
                 } catch(err) {
                     console.log(err.message);
@@ -90,14 +66,14 @@ const Listings = ({userId}) => {
             .map(obj => obj.location));
     }, [listings])
 
-    // Fetches data when user selects a filter
+    // Filters data when user selects a filter
     useEffect(() => {
         let res = listings;
         if( selectedLocation !== '' ) {
             res = res.filter(listing => listing.location.toLowerCase() === selectedLocation.toLowerCase());
         }
-        if( selectedUser.id !== '') {
-            res = res.filter(listing => listing.user_id === selectedUser.id);
+        if( selectedUser._id !== '') {
+            res = res.filter(listing => listing.user.id === selectedUser._id);
         }
         setFilteredListings(res);
     }, [selectedUser, selectedLocation, listings]);
@@ -117,10 +93,10 @@ const Listings = ({userId}) => {
                 <Grid item>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="user-select-label">Select User</InputLabel>
-                        <Select value={selectedUser.id === '' ? '' : selectedUser} labelId='user-select-label' displayEmpty onChange={handleUserChange}>
-                            <MenuItem value={{id: ''}}>All Users</MenuItem>
+                        <Select value={selectedUser._id === '' ? '' : selectedUser} labelId='user-select-label' displayEmpty onChange={handleUserChange}>
+                            <MenuItem value={{_id: ''}}>All Users</MenuItem>
                             {users.map(user => (
-                                <MenuItem key={user.id} value={user}>
+                                <MenuItem key={user._id} value={user}>
                                     {user.username}
                                 </MenuItem>
                             ))}
@@ -149,7 +125,7 @@ const Listings = ({userId}) => {
             </Grid>
             <Grid justify='flex-start' container>
                 { filteredListings.map(item => (
-                    <ListingItem userId={userId} key={item.id} listing={item} />
+                    <ListingItem userId={userId} key={item._id} listing={item} />
                 )) }
             </Grid>
         </Container>

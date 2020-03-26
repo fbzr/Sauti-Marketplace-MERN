@@ -2,7 +2,7 @@ import React from 'react';
 import { CardContent, Card, Collapse, Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { Form, withFormik, useField } from 'formik';
 import * as yup from 'yup';
-import Axios from 'axios';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -74,8 +74,6 @@ const AddListing = withFormik({
     }),
     handleSubmit: (values, { resetForm, setSubmitting, props }) => {
         setSubmitting(true);
-        const token = sessionStorage.getItem('token');
-        const config = { headers: { 'Authorization':token } }
         
         const data = {
             location: values.location,
@@ -84,7 +82,7 @@ const AddListing = withFormik({
             price: values.price
         }
         
-        Axios.post(`http://localhost:5000/api/listings/`, data, config)
+        axiosWithAuth().post(`/api/listings/`, data)
             .then(res => {
                 setSubmitting(false);
                 resetForm();

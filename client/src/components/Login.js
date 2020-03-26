@@ -1,10 +1,11 @@
 import React from 'react';
 import { Form, withFormik, useField } from 'formik';
 import * as yup from 'yup';
+// material-ui
 import { TextField, Button, Grid, makeStyles, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+// crud
+import { login } from '../crud/auth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -49,11 +50,6 @@ const MuiFormikTextField = ({ label, ...props }) => {
 }
 
 const LoginForm = (props) => {
-    const history = useHistory();
-    if(sessionStorage.getItem('token')) {
-        history.push('/');
-    }
-
     const { isSubmitting, values, setValues } = props;
     const classes = useStyles();
     
@@ -84,7 +80,7 @@ const LoginForm = (props) => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
+                                    <IconButton tabIndex="-1" aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} >
                                         {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment> )
@@ -119,19 +115,19 @@ const Login = withFormik({
         const { username, password } = data;
 
         // Log in 
-        axios.post('http://localhost:5000/api/auth/login', { username, password })
-            .then(res => {
-                setSubmitting(true);
-                const { token, user_id } = res.data;
-                
-                resetForm();
-                setSubmitting(false);
-                props.handleLogin(token, user_id);
-            })
-            .catch(err => {
-                setSubmitting(false);
-                return setErrors({password: 'Password doesn\'t match'})
-            })
+        login({username, password})
+        .then(res => {
+            setSubmitting(true);
+            const { token, user_id } = res.data;
+            
+            resetForm();
+            setSubmitting(false);
+            props.handleLogin(token, user_id);
+        })
+        .catch(err => {
+            setSubmitting(false);
+            return setErrors({password: 'Invalid credentials'})
+        });
     }
 })(LoginForm)
 
