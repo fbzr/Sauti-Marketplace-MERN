@@ -17,8 +17,6 @@ connectDB();
 //Init Middleware
 app.use(express.json({ extended: false }));
 
-app.get('/', (req, res) => res.send(`API running`));
-
 // Define the routes in different files
 app.use('/api/listings', require('./routes/api/listings'));
 app.use('/api/prices', require('./routes/api/prices'));
