@@ -8,6 +8,14 @@ export const getAllListings = async () => {
     }
 }
 
+export const addListing = async listing => {
+    try {
+        return axiosWithAuth().post('/api/listings/', listing);
+    } catch(err) {
+        return err;
+    }
+}
+
 export const removeListing = async listingId => {
     try {
         return await axiosWithAuth().delete(`/api/listings/${listingId}`);
@@ -16,7 +24,17 @@ export const removeListing = async listingId => {
     }
 }
 
+export const editListing = async listing => {
+    try {
+        return await axiosWithAuth().put(`/api/listings/${listing._id}`, listing);
+    } catch(err) {
+        return err;
+    }
+}
+
 export default {
     getAllListings,
-    removeListing
+    addListing,
+    removeListing,
+    editListing
 }

@@ -2,7 +2,8 @@ import React from 'react';
 import { CardContent, Card, Collapse, Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { Form, withFormik, useField } from 'formik';
 import * as yup from 'yup';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import listingsOperations from '../crud/listings';
+import { MuiFormikTextField } from './CustomInputs';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -13,20 +14,6 @@ const useStyles = makeStyles(theme => ({
         zIndex: '1'
     }
 }))
-
-// Material UI TextField with access to Formik Field's props and methods 
-const MuiFormikTextField = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <TextField 
-            {...field}
-            {...props}
-            label={label}
-            error={meta.error && meta.touched}
-            helperText={ (meta.error && meta.touched) && meta.error }
-        />         
-    )
-}
 
 const AddListingForm = (props) => {
     const { isSubmitting, expanded } = props;
@@ -82,7 +69,7 @@ const AddListing = withFormik({
             price: values.price
         }
         
-        axiosWithAuth().post(`/api/listings/`, data)
+        listingsOperations.addListing(data)
             .then(res => {
                 setSubmitting(false);
                 resetForm();

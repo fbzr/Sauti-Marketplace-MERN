@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { TextField, Button, Grid, makeStyles, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { login, register } from '../crud/auth';
+import { MuiFormikTextField } from './CustomInputs';
 
 const useStyles = makeStyles(theme => ({ 
     root: {
@@ -32,20 +33,6 @@ const useStyles = makeStyles(theme => ({
         }
     }
   }));
-
-// Material UI TextField with access to Formik Field's props and methods 
-const MuiFormikTextField = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <TextField 
-            {...field}
-            {...props}
-            label={label}
-            error={meta.error && meta.touched}
-            helperText={ (meta.error && meta.touched) && meta.error }
-        />         
-    )
-}
 
 const SignUpForm = (props) => {
     const { isSubmitting, values, setValues } = props;

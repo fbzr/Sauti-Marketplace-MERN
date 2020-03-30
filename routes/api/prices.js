@@ -69,7 +69,6 @@ router.delete('/delete/:id', auth, async (req, res) => {
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
     try {
-        debugger
         const {
             product,
             product_cat,

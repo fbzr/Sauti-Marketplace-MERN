@@ -6,6 +6,8 @@ import { TextField, Button, Grid, makeStyles, Paper, Typography, InputAdornment,
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 // crud
 import { login } from '../crud/auth';
+// custom field
+import { MuiFormikTextField } from './CustomInputs';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,20 +36,6 @@ const useStyles = makeStyles(theme => ({
         }
     }
   }));
-
-// Material UI TextField with access to Formik Field's props and methods 
-const MuiFormikTextField = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <TextField 
-            {...field}
-            {...props}
-            label={label}
-            error={meta.error && meta.touched}
-            helperText={ (meta.error && meta.touched) && meta.error }
-        />         
-    )
-}
 
 const LoginForm = (props) => {
     const { isSubmitting, values, setValues } = props;
