@@ -5,14 +5,10 @@ const connectDB = require('./config/db');
 const app = express();
 const path= require('path');
 
-app.use(cors({
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200
-}));
-
-
 // Connect Database
 connectDB();
+
+app.use(cors());
 
 //Init Middleware
 app.use(express.json({ extended: false }));

@@ -22,7 +22,6 @@
   "homepage": "https://github.com/fbzr/Sauti-Marketplace-React#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.3.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
