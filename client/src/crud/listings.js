@@ -7,3 +7,16 @@ export const getAllListings = async () => {
         return err;
     }
 }
+
+export const removeListing = async listingId => {
+    try {
+        return await axiosWithAuth().delete(`/api/listings/${listingId}`);
+    } catch(err) {
+        return err;
+    }
+}
+
+export default {
+    getAllListings,
+    removeListing
+}

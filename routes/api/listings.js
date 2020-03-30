@@ -49,11 +49,28 @@ router.post('/', auth, async (req, res) => {
     } catch(err) {
         res.status(500).send(`Server error: ${err.message}`);
     }
-    // Listing.find({}, (err, listings) => {
-    //     if(!err) {
-    //         return res.status(200).json(listings);
-    //     }
-    // })
+});
+
+// @route   DELETE /api/listings/:id
+// @desc    Remove listing
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+    try {
+         const listing = Listing.findById(req.params.id);
+
+         if (!listing || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+             return res.status(404).send('Listing not found');
+         }
+
+         if (listing.user.id !== req.user.id) {
+             return res.status(500).send('User does not have credentials');
+         }
+
+         await listing.remove();
+         res.status(200).send('Listing removed');
+    } catch(err) {
+        res.status(500).send(`Server error: ${err.message}`);
+    }
 });
 
 module.exports = router;
