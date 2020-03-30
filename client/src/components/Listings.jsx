@@ -81,6 +81,14 @@ const Listings = ({userId}) => {
     const handleUserChange = e => setSelectedUser(e.target.value);
     const handleLocationChange = e => setSelectedLocation(e.target.value);
 
+    const handleEditListings = listing => {
+        setListings(listings.map(item => item._id === listing._id ? listing : item));
+    }
+
+    const handleDeleteListing = listing => {
+        setListings(listings.filter(item => item._id !== listing._id));
+    }
+
     const handleAddButtonClick = e => setExpanded(!expanded);
     const resetListings = () => {
         setReload(true);
@@ -125,7 +133,7 @@ const Listings = ({userId}) => {
             </Grid>
             <Grid justify='flex-start' container>
                 { filteredListings.map(item => (
-                    <ListingItem userId={userId} key={item._id} listing={item} />
+                    <ListingItem userId={userId} key={item._id} listing={item} deleteListing={handleDeleteListing} editListings={handleEditListings} />
                 )) }
             </Grid>
         </Container>

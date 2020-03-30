@@ -56,21 +56,64 @@ router.post('/', auth, async (req, res) => {
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
     try {
-         const listing = Listing.findById(req.params.id);
+        Listing.findById(req.params.id, async (err, listing) => {
+            if(err) {
+                return res.status(500).send('Server error');
+            }
 
-         if (!listing || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-             return res.status(404).send('Listing not found');
-         }
-
-         if (listing.user.id !== req.user.id) {
-             return res.status(500).send('User does not have credentials');
-         }
-
-         await listing.remove();
-         res.status(200).send('Listing removed');
+            if (!listing || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+                return res.status(404).send('Listing not found');
+            }
+    
+            if (listing.user.id.toString() !== req.user.id.toString()) {
+                return res.status(500).send('User does not have credentials');
+            }
+    
+            await listing.remove();
+            res.status(200).send('Listing removed');
+        });
     } catch(err) {
         res.status(500).send(`Server error: ${err.message}`);
     }
 });
+
+// @route   PUT /api/listings/:id
+// @desc    Edit listing
+// @access  Private
+router.put('/:id', auth, async (req, res) => {
+    try {
+        Listing.findById(req.params.id, (err, listing) => {
+            if(err) {
+                return res.status(500).send('Server error');
+            }
+
+            if (!listing || !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+                return res.status(404).send('Listing not found');
+            }
+    
+            if (listing.user.id.toString() !== req.user.id.toString()) {
+                return res.status(500).send('User does not have credentials');
+            }
+
+            const {
+                item,
+                description,
+                location,
+                price
+            } = req.body;
+
+            
+            listing.item = item;
+            listing.description = description;
+            listing.location = location;
+            listing.price = price;
+            listing.save();
+
+            res.json(listing);
+        });
+    } catch(err) {
+        res.status(500).send(`Server error: ${err.message}`);
+    }
+})
 
 module.exports = router;
